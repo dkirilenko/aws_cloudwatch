@@ -111,6 +111,7 @@ module AWSCloudwatch
         template json_path do
           action    :create
           source    new_resource.json_config
+          variables config_params
         end
         script 'amazon-cloudwatch-agent-config-translator' do
           action :run
