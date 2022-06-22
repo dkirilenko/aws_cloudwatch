@@ -111,8 +111,17 @@ module AWSCloudwatch
         template json_path do
           action    :create
           source    new_resource.json_config
-          variables config_params
         end
+
+        config_path = '/opt/aws/amazon-cloudwatch-agent/etc'
+        json_path = "#{::File::join(config_path, node['aws_cloudwatch']['config']['json_file_name'])}"
+        agent_tom_path = "#{::File::join(config_path, 'amazon-cloudwatch-agent.toml')}"
+        common_path = "#{::File::join(config_path, node['aws_cloudwatch']['config']['file_name'])}"
+        
+        puts "json_path -- #{::File::exists?(json_path)} #{json_path}"
+        puts "agent_tom_path -- #{::File::exists?(agent_tom_path)} #{agent_tom_path}"
+        puts "common_path -- #{::File::exists?(common_path)} #{common_path}"
+
         script 'amazon-cloudwatch-agent-config-translator' do
           action :run
           not_if { ::File.exists?(agent_tom_path) }
