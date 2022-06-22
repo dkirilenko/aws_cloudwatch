@@ -125,6 +125,7 @@ module AWSCloudwatch
         script 'amazon-cloudwatch-agent-config-translator' do
           action :run
           not_if { ::File.exists?(agent_tom_path) }
+          only_if { ::File.exists?(json_path) }
           case node[:platform]
             when 'windows'
               # interpreter "powershell"
